@@ -1,6 +1,5 @@
 package co.edu.uniandes.csw.carrocompras.master.service;
 
-import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -14,5 +13,5 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class CarroComprasMasterService extends _CarroComprasMasterService {
 
-
+  
 }

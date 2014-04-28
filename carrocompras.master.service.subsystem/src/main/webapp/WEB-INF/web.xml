@@ -7,7 +7,8 @@
         <init-param>
             <description>Multiple packages, separated by semicolon(;), can be specified in param-value</description>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>co.edu.uniandes.csw.carrocompras.master.service</param-value>
+            <param-value>co.edu.uniandes.csw.login.service;co.edu.uniandes.csw.carrocompras.master.service</param-value>
+            
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
@@ -36,7 +37,7 @@
     </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>MarketplaceRealm</realm-name>
+        <realm-name>MarketplaceAuth</realm-name>
         <form-login-config>
             <form-login-page>/login.html</form-login-page>
             <form-error-page>/error.html</form-error-page>

@@ -6,7 +6,7 @@ define([], function() {
  ,  
 		 'password' : ''
  ,  
-		 'role' : ''
+		 'role' : 'Client'
         },
         initialize: function() {
         },
