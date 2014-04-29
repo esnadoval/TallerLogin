@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 public class AuthService {
 
     @GET
-    @Path("session/user")
+    @Path("session/userstack")
     public String getLogedUserStack(@Context HttpServletRequest req) {
         
         return "<b>"+req.getRemoteUser()+"</b></br><a href=\"webresources/auth/session/logout\">Log Out</a>";
@@ -48,4 +48,12 @@ public class AuthService {
         }
 
     }
+    
+    @GET
+    @Path("session/user")
+    public String getLogedUser(@Context HttpServletRequest req) {
+        
+        return req.getRemoteUser();
+    }
+    
 }

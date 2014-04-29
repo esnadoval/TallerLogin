@@ -11,37 +11,20 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
             var uComponent = new CarroComprasComponent();
             uComponent.initialize();
             uComponent.render('main');
+            
+            /* Aqui se hace la llamada al delegate para obtener el "user stack" (html con el nombre y el link de cerrar 
+             * sesión*/
+            App.Delegate.LoginDelegate.getLogedUserStack("", function(data) {
 
-            App.Delegate.LoginDelegate.getLogedUser("", function(data) {
-
-                
-                    floatingMenu.add('floatdiv',
-                    {
-                        // Represents distance from left or right browser window  
-                        // border depending upon property used. Only one should be  
-                        // specified.  
-                        // targetLeft: 0,  
-                        targetRight: 10,
-                        // Represents distance from top or bottom browser window  
-                        // border depending upon property used. Only one should be  
-                        // specified.  
-                        targetTop: 10,
-                        // targetBottom: 0,  
-
-                        // Uncomment one of those if you need centering on  
-                        // X- or Y- axis.  
-                        // centerX: true,  
-                        // centerY: true,  
-
-                        // Remove this one if you don't want snap effect  
-                        snap: true
-                    });
-                    $("#floatdiv").html("<table width=\"100%\" height=\"100%\" ><tr><td align=\"center\"><span class=\"glyphicon glyphicon-user\"></span></td><td>"+data+"</td></tr></table>");
-                
-                
-                
-                
-
+                /*Se crea un div flotante con la libreria js referenciada en el index*/
+                floatingMenu.add('floatdiv',
+                        {
+                            targetRight: 10,
+                            targetTop: 10,
+                            snap: true
+                        });
+                /*con jquery, se agrega el contenido del "user stack" al div flotante creado anteriormente*/
+                $("#floatdiv").html("<table width=\"100%\" height=\"100%\" ><tr><td align=\"center\"><span class=\"glyphicon glyphicon-user\"></span></td><td>" + data + "</td></tr></table>");
 
             }, function(data) {
                 Backbone.trigger(uComponent.componentId + '-' + 'error', {event: 'get logged user', view: self, id: '', data: data, error: {textResponse: 'Error in getting logged user'}});
@@ -51,9 +34,11 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
 
             Backbone.on(uComponent.componentId + '-post-carroCompras-create', function(params) {
                 self.renderChilds(params);
+                self.autoSelectLoggedClient(params);
             });
             Backbone.on(uComponent.componentId + '-post-carroCompras-edit', function(params) {
                 self.renderChilds(params);
+                
             });
             Backbone.on(uComponent.componentId + '-pre-carroCompras-list', function() {
                 self.hideChilds();
@@ -98,6 +83,30 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
                 });
             });
         },
+        //Esta función cambia el combo box 'clienteID' coon el usuario logeado automaticamente.
+        autoSelectLoggedClient: function(params) {
+            /*Función timeout para que alcancen a cargarse los controles bootstrap (animaciones)*/
+            setTimeout(function() {
+                /*se invoca la el servicio REST que obtiene el nombre del usuario logeado*/
+                        App.Delegate.LoginDelegate.getLogedUser("", function(data) {
+                            var useropt;
+                            //Se busca el dropdown list de clientes
+                            $('#clienteId > option').each(function() {
+                                //Si encuentra un item con el nombre del usuario lo guarda en la variable
+                                if(data == this.text){
+                                    useropt = $(this);
+                                }
+                            });
+                            //Vacia la lista
+                            $('#clienteId').empty();
+                            //Agrega unicamente el cliente encontrado, siendo este la única selección posible
+                            $('#clienteId').append(useropt);
+                            
+
+                        }, function(data) {
+                        });
+                    }, 500);
+        },
         renderChilds: function(params) {
             var self = this;
             this.tabModel = new App.Model.TabModel(
@@ -130,6 +139,7 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
 
 
                     $('#tabs').show();
+                    
                 },
                 error: function() {
                     Backbone.trigger(self.componentId + '-' + 'error', {event: 'carroCompras-edit', view: self, id: id, data: data, error: error});
@@ -137,6 +147,7 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
             };
             if (params.id) {
                 self.model = new App.Model.CarroComprasMasterModel({id: params.id});
+                
                 self.model.fetch(options);
             } else {
                 self.model = new App.Model.CarroComprasMasterModel();
