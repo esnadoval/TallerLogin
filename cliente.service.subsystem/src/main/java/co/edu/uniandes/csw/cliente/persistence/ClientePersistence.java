@@ -10,13 +10,25 @@ import co.edu.uniandes.csw.cliente.persistence.entity.ClienteEntity;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 @Default
 @Stateless
 @LocalBean
 public class ClientePersistence extends _ClientePersistence implements IClientePersistence {
 
+    public ClienteDTO getClienteId(String name) {
+		Query q = entityManager.createQuery("select u from ClienteEntity u where u.name = '"+name+"'");
+		if(q.getResultList().isEmpty()){
+                    return null;
+                }else{
+                    return ClienteConverter.entity2PersistenceDTO((ClienteEntity)q.getResultList().get(0));
+                }
+                 
+	}
+    
     public ClienteDTO createCliente(ClienteDTO cliente) {
         try {
             cliente.setPassword(MD5(cliente.getPassword()));
