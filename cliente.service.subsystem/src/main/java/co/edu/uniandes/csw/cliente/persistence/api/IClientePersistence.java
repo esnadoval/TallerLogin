@@ -1,6 +1,8 @@
 
 package co.edu.uniandes.csw.cliente.persistence.api;
 
-public interface IClientePersistence extends _IClientePersistence {
+import co.edu.uniandes.csw.cliente.logic.dto.ClienteDTO;
 
+public interface IClientePersistence extends _IClientePersistence {
+     public ClienteDTO getClienteId(String name);
 }

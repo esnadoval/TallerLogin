@@ -34,7 +34,7 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
 
             Backbone.on(uComponent.componentId + '-post-carroCompras-create', function(params) {
                 self.renderChilds(params);
-                self.autoSelectLoggedClient(params);
+               
             });
             Backbone.on(uComponent.componentId + '-post-carroCompras-edit', function(params) {
                 self.renderChilds(params);
@@ -83,30 +83,7 @@ define(['controller/selectionController', 'model/cacheModel', 'model/carroCompra
                 });
             });
         },
-        //Esta función cambia el combo box 'clienteID' coon el usuario logeado automaticamente.
-        autoSelectLoggedClient: function(params) {
-            /*Función timeout para que alcancen a cargarse los controles bootstrap (animaciones)*/
-            setTimeout(function() {
-                /*se invoca la el servicio REST que obtiene el nombre del usuario logeado*/
-                        App.Delegate.LoginDelegate.getLogedUser("", function(data) {
-                            var useropt;
-                            //Se busca el dropdown list de clientes
-                            $('#clienteId > option').each(function() {
-                                //Si encuentra un item con el nombre del usuario lo guarda en la variable
-                                if(data == this.text){
-                                    useropt = $(this);
-                                }
-                            });
-                            //Vacia la lista
-                            $('#clienteId').empty();
-                            //Agrega unicamente el cliente encontrado, siendo este la única selección posible
-                            $('#clienteId').append(useropt);
-                            
-
-                        }, function(data) {
-                        });
-                    }, 500);
-        },
+       
         renderChilds: function(params) {
             var self = this;
             this.tabModel = new App.Model.TabModel(

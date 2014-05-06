@@ -57,6 +57,9 @@ define(['model/carroComprasModel'], function(carroComprasModel) {
 				if(!this.carroComprasModelList){
                  this.carroComprasModelList = new this.listModelClass();
 				}
+                
+                
+                
                 this.carroComprasModelList.fetch({
                     data: data,
                     success: function() {
