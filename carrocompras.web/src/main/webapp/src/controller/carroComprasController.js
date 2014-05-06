@@ -14,21 +14,26 @@ define(['controller/_carroComprasController', 'delegate/carroComprasDelegate'], 
                     this.carroComprasModelList = new this.listModelClass();
                 }
 
-                var ctrl = this;
+
                 App.Delegate.CarroComprasDelegate.prototype.getLogedUser("", function(data) {
 
                     App.Delegate.CarroComprasDelegate.prototype.getClientCarts(data, function(data2) {
-                        ctrl.carroComprasModelList.fetch({
-                            data: data2,
-                            success: function() {
-                                self._renderList();
-                                Backbone.trigger(self.componentId + '-' + 'post-carroCompras-list', {view: self});
-                            },
-                            error: function(mode, error) {
-                                Backbone.trigger(self.componentId + '-' + 'error', {event: 'carroCompras-list', view: self, error: error});
-                            }
+
+
+                        var elementos = data2;
+
+                        self.carroComprasModelList = new self.listModelClass();
+                        _.each(elementos, function(d) {
+                            var model = new App.Model.CarroComprasModel(d);
+
+                            self.carroComprasModelList.models.push(model);
 
                         });
+
+                        self._renderList();
+                        Backbone.trigger(self.componentId + '-' + 'post-carroCompras-list', {view: self});
+
+
                     }, function(data3) {
 
                     });
@@ -39,6 +44,30 @@ define(['controller/_carroComprasController', 'delegate/carroComprasDelegate'], 
                 });
 
             }
+        },
+        _loadRequiredComponentsData: function(callBack) {
+            var self = this;
+            var listReady = _.after(1, function() {
+                callBack();
+            });
+            var listDataReady = function(componentName, model) {
+                App.Delegate.CarroComprasDelegate.prototype.getLogedUser("", function(data) {
+                    var list = model.models;
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i].attributes.name != data) {
+                            list.splice(i, 1);
+                        }
+                    }
+                    self[componentName] = model;
+                    listReady();
+
+                }, function(data4) {
+
+
+                });
+
+            };
+            App.Utils.getComponentList('clienteComponent', listDataReady);
         }
     });
     return App.Controller.CarroComprasController;

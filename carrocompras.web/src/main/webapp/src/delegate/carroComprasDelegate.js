@@ -3,7 +3,7 @@ define(['delegate/_carroComprasDelegate'], function() {
         //Función que obtiene el usuario logeado. si no lo está, retorna null.
         getLogedUser: function(sdata, callback, callbackError) {
             $.ajax({
-                url: '/carrocompras.master.service.subsystem-0.0.1-SNAPSHOT/webresources/auth/session/user',
+                url: '/carrocompras.master.service.subsystem/webresources/auth/session/user',
                 method: 'GET',
                 dataType: "html",
                 contentType: "application/json"
@@ -18,7 +18,19 @@ define(['delegate/_carroComprasDelegate'], function() {
             $.ajax({
                 url: '../carrocompras.service.subsystem.web/webresources/CarroCompras/cliente/'+sdata,
                 method: 'GET',
-                dataType: "html",
+                dataType: "json",
+                contentType: "application/json"
+            }).done(function(data) {
+                callback(data);
+            }).fail(function(error) {
+                callbackError(error);
+            });
+        },
+        getClientByName: function(sdata, callback, callbackError) {
+            $.ajax({
+                url: '../cliente.service.subsystem.web/webresources/Cliente/servicejson/'+sdata,
+                method: 'GET',
+                dataType: "json",
                 contentType: "application/json"
             }).done(function(data) {
                 callback(data);

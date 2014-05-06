@@ -43,7 +43,7 @@
  
 			<label for="clienteidId">clienteId</label> 
             <select class="form-control" id="clienteId" name="clienteId">
-			  <option value="">None</option>
+			
             <% cliente.each(function(clienteid) { %> 
               <option value="<%=clienteid.get('id')%>" <% if(carroCompras.get('clienteId')==clienteid.get('id')) {%>selected<%}%> ><%=clienteid.get('name')%></option>
             <% }); %>                
