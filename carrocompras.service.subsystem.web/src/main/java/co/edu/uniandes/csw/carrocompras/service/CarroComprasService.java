@@ -16,6 +16,9 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class CarroComprasService extends _CarroComprasService {
+    /**Nuevo servicio que obtiene una lista de los carritos de compras de un usuario (cliente) en particular
+    @param name el nombre del del cliente
+    */
 @GET
 @Path("cliente/{name}")
 public List<CarroComprasDTO> getCarroComprassCliente(@PathParam("name")String name) {

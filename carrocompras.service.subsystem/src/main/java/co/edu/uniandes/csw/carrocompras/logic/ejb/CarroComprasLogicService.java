@@ -25,12 +25,12 @@ public class CarroComprasLogicService extends _CarroComprasLogicService implemen
             
             Client client = Client.create();
             /**
-             * SE CONSUME EL SERVICIO DEL CLIENTE PARA OBTENER EL ID DEL CLIENTE.
+             * SE CONSUME EL NUEVO SERVICIO DEL CLIENTE (del componente cliente) PARA OBTENER EL ID DEL CLIENTE.
 
              */
             WebResource webResource = client.resource(URL_SERVICIO + "/webresources/Cliente/services/" + name);
             String resp = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN).get(String.class);
-         
+         //Finalmente, se consulta por el id del cliente.
             return persistance.getCarroComprassCliente(Long.parseLong(resp));
         } catch (Exception ex) {
             ex.printStackTrace();

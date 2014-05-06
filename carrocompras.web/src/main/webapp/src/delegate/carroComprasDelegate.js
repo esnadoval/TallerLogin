@@ -26,6 +26,7 @@ define(['delegate/_carroComprasDelegate'], function() {
                 callbackError(error);
             });
         },
+        //Función que obtiene un cliente dado su nombre.
         getClientByName: function(sdata, callback, callbackError) {
             $.ajax({
                 url: '../cliente.service.subsystem.web/webresources/Cliente/servicejson/'+sdata,
